@@ -9,7 +9,7 @@ namespace Eisk.Core.Tests
         [Fact]
         public void Test1()
         {
-            CoreException cex = new CoreException();
+            
         }
     }
 }
