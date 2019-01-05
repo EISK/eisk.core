@@ -9,7 +9,7 @@ namespace Eisk.Test.Core.Tests
         [Fact]
         public void Test1()
         {
-            EntityDataFactory<object> entityDataFactory;
+           
         }
     }
 }
