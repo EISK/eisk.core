@@ -55,5 +55,17 @@ namespace Test.Core.TestBases
             Assert.NotEqual(default(TId), GetIdValueFromEntity(domainReturned));
         }
 
+        [Fact]
+        public virtual void Add_NullDomainPassed_ShouldThrowArgumentNullException()
+        {
+            //Arrange
+            var service = Factory_Service();
+
+
+            //Act and Assert
+            Assert.Throws<ArgumentNullException>(() => service.Add(null));
+
+        }
+
     }
 }
