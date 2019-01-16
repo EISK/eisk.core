@@ -38,6 +38,11 @@ namespace Test.Core.TestBases
             ExpressionUtil<TEntity>.SetPropertyValue(_idExpression, entity, value);
         }
 
+        protected void SetupGetById(TEntity getEntity)
+        {
+            _dataService.Add(getEntity);
+        }
+
         [Fact]
         public virtual void Add_ValidDomainPassed_ShouldReturnDomainAfterCreation()
         {
@@ -64,6 +69,70 @@ namespace Test.Core.TestBases
 
             //Act and Assert
             Assert.Throws<ArgumentNullException>(() => service.Add(null));
+
+        }
+
+        [Fact]
+        public virtual void GetById_ValidIdPassed_ShouldReturnResult()
+        {
+            //Arrange
+            var domain = Factory_Entity();
+            var service = Factory_Service(() => SetupGetById(domain));
+            var idValue = GetIdValueFromEntity(domain);
+            
+            //Act
+            var domainReturned = service.GetById(idValue);
+
+            //Assert
+            Assert.NotNull(domainReturned);
+            Assert.Equal(idValue, GetIdValueFromEntity(domainReturned));
+        }
+
+        [Fact]
+        public virtual void GetById_InvalidIdPassed_ShouldReturnNull()
+        {
+            //Arrange
+            var domain = Factory_Entity();
+            var service = Factory_Service();
+            
+            //Act
+            var domainReturned = service.GetById(default(TId));
+
+            //Assert
+            Assert.Null(domainReturned);
+            
+        }
+
+        [Fact]
+        public virtual void Update_ValidDomainPassed_ShouldReturnDomain()
+        {
+            //Arrange
+            var domainInput = Factory_Entity();
+            var service = Factory_Service(() =>
+            {
+                SetupGetById(domainInput);
+            });
+
+            //Act
+            var domainReturned = service.Update(domainInput);
+
+            //Assert
+            Assert.NotNull(domainReturned);
+            Assert.Equal(GetIdValueFromEntity(domainInput), GetIdValueFromEntity(domainReturned));
+
+        }
+
+        [Fact]
+        public virtual void Update_ValidDomainPassed_()
+        {
+            //Arrange
+            var domainInput = Factory_Entity();
+            //SetIdValueToEntity(domainInput, default(TId));
+            var service = Factory_Service();
+
+            //Act
+            var domainReturned = service.Update(domainInput);
+            
 
         }
 
