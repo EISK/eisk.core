@@ -24,26 +24,25 @@ namespace Test.Core.TestBases
             return _domainService;
         }
 
-        protected void CreateARecord(TEntity getEntity)
+        protected override void CreateTestEntity(TEntity testEntity)
         {
-            _domainService.Add(getEntity);
+            _domainService.Add(testEntity);
         }
 
         [Fact]
         public virtual void Add_ValidDomainPassed_ShouldReturnDomainAfterCreation()
         {
             //Arrange
-            var domainInput = Factory_Entity();
-            SetIdValueToEntity(domainInput, default(TId));//TODO: support for non-auto Id's
-
-            var service = Factory_Service();
+            var inputDomain = Factory_Entity();
+            var domainService = Factory_Service();
 
             //Act
-            var domainReturned = service.Add(domainInput);
+            var returnedDomain = domainService.Add(inputDomain);
 
             //Assert
-            Assert.NotNull(domainReturned);
-            Assert.NotEqual(default(TId), GetIdValueFromEntity(domainReturned));
+            Assert.NotNull(returnedDomain);
+            Assert.NotEqual(default(TId), GetIdValueFromEntity(returnedDomain));
         }
+        
     }
 }

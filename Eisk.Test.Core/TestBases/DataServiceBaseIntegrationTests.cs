@@ -25,54 +25,52 @@ namespace Test.Core.TestBases
             return _dataService;
         }
 
-        protected void CreateARecord(TEntity getEntity)
+        protected override void CreateTestEntity(TEntity testEntity)
         {
-            _dataService.Add(getEntity);
+            _dataService.Add(testEntity);
         }
 
         [Fact]
         public virtual void Add_ValidDomainPassed_ShouldReturnDomainAfterCreation()
         {
             //Arrange
-            var domainInput = Factory_Entity();
-            
-            var service = Factory_Service();
+            var inputEntity = Factory_Entity();
+            var dataService = Factory_Service();
 
             //Act
-            var domainReturned = service.Add(domainInput);
+            var returnedEntity = dataService.Add(inputEntity);
 
             //Assert
-            Assert.NotNull(domainReturned);
-            Assert.NotEqual(default(TId), GetIdValueFromEntity(domainReturned));
+            Assert.NotNull(returnedEntity);
+            Assert.NotEqual(default(TId), GetIdValueFromEntity(returnedEntity));
         }
 
         [Fact]
         public virtual void Add_ValidDomainWithRandomIdPassed_ShouldReturnDomainAfterCreation()
         {
             //Arrange
-            var domainInput = Factory_Entity();
+            var inputEntity = Factory_Entity();
             //might pass for sql lite, but fail for sql server
-            SetIdValueToEntity(domainInput, 100);//TODO: support for generic
-
-            var service = Factory_Service();
+            SetIdValueToEntity(inputEntity, 100);//TODO: support for generic
+            var dataService = Factory_Service();
 
             //Act
-            var domainReturned = service.Add(domainInput);
+            var returnedEntity = dataService.Add(inputEntity);
 
             //Assert
-            Assert.NotNull(domainReturned);
-            Assert.NotEqual(default(TId), GetIdValueFromEntity(domainReturned));
+            Assert.NotNull(returnedEntity);
+            Assert.NotEqual(default(TId), GetIdValueFromEntity(returnedEntity));
         }
 
         [Fact]
         public virtual void Add_NullDomainPassed_ShouldThrowArgumentNullException()
         {
             //Arrange
-            var service = Factory_Service();
+            var dataService = Factory_Service();
             TEntity invalidNullDomain = null;
             
             //Act and Assert
-            Assert.Throws<ArgumentNullException>(() => service.Add(invalidNullDomain));
+            Assert.Throws<ArgumentNullException>(() => dataService.Add(invalidNullDomain));
 
         }
 
@@ -81,28 +79,28 @@ namespace Test.Core.TestBases
         {
             //Arrange
             var domain = Factory_Entity();
-            var service = Factory_Service(() => CreateARecord(domain));
+            var dataService = Factory_Service(() => CreateTestEntity(domain));
             var idValue = GetIdValueFromEntity(domain);
             
             //Act
-            var domainReturned = service.GetById(idValue);
+            var returnedEntity = dataService.GetById(idValue);
 
             //Assert
-            Assert.NotNull(domainReturned);
-            Assert.Equal(idValue, GetIdValueFromEntity(domainReturned));
+            Assert.NotNull(returnedEntity);
+            Assert.Equal(idValue, GetIdValueFromEntity(returnedEntity));
         }
 
         [Fact]
         public virtual void GetById_EmptyIdPassed_ShouldReturnNull()
         {
             //Arrange
-            var service = Factory_Service();
+            var dataService = Factory_Service();
             
             //Act
-            var domainReturned = service.GetById(default(TId));
+            var returnedEntity = dataService.GetById(default(TId));
 
             //Assert
-            Assert.Null(domainReturned);
+            Assert.Null(returnedEntity);
             
         }
 
@@ -110,13 +108,13 @@ namespace Test.Core.TestBases
         public virtual void GetById_InvalidIdPassed_ShouldReturnNull()
         {
             //Arrange
-            var service = Factory_Service();
+            var dataService = Factory_Service();
 
             //Act
-            var domainReturned = service.GetById(100);//TODO: make it generic random
+            var returnedEntity = dataService.GetById(100);//TODO: make it generic random
 
             //Assert
-            Assert.Null(domainReturned);
+            Assert.Null(returnedEntity);
 
         }
 
@@ -124,19 +122,18 @@ namespace Test.Core.TestBases
         public virtual void Update_ValidDomainPassed_ShouldReturnDomain()
         {
             //Arrange
-            var domainInput = Factory_Entity();
-            
-            var service = Factory_Service(() =>
+            var inputEntity = Factory_Entity();
+            var dataService = Factory_Service(() =>
             {
-                CreateARecord(domainInput);
+                CreateTestEntity(inputEntity);
             });
 
             //Act
-            var domainReturned = service.Update(domainInput);
+            var returnedEntity = dataService.Update(inputEntity);
 
             //Assert
-            Assert.NotNull(domainReturned);
-            Assert.Equal(GetIdValueFromEntity(domainInput), GetIdValueFromEntity(domainReturned));
+            Assert.NotNull(returnedEntity);
+            Assert.Equal(GetIdValueFromEntity(inputEntity), GetIdValueFromEntity(returnedEntity));
 
         }
 
@@ -144,16 +141,15 @@ namespace Test.Core.TestBases
         public virtual void Update_ValidDomainWithEmptyIdPassed_ShouldCreateDomain()
         {
             //Arrange
-            var domainInput = Factory_Entity();
-            
-            var service = Factory_Service();
+            var inputEntity = Factory_Entity();
+            var dataService = Factory_Service();
 
             //Act
-            var domainReturned = service.Update(domainInput);
+            var returnedEntity = dataService.Update(inputEntity);//may not be supported in all data providers
 
             //Assert
-            Assert.NotNull(domainReturned);
-            Assert.NotEqual(default(TId), GetIdValueFromEntity(domainReturned));
+            Assert.NotNull(returnedEntity);
+            Assert.NotEqual(default(TId), GetIdValueFromEntity(returnedEntity));
 
         }
 
@@ -161,12 +157,12 @@ namespace Test.Core.TestBases
         public virtual void Update_ValidDomainWithRandomIdPassed_ShouldThrowException()
         {
             //Arrange
-            var domainWithRandomId = Factory_Entity();
-            SetIdValueToEntity(domainWithRandomId, 100);//TODO: support generic
-            var service = Factory_Service();
+            var entityWithRandomId = Factory_Entity();
+            SetIdValueToEntity(entityWithRandomId, 100);//TODO: support generic
+            var dataService = Factory_Service();
 
             //Act
-            var ex = Record.Exception(() => service.Update(domainWithRandomId));
+            var ex = Record.Exception(() => dataService.Update(entityWithRandomId));
 
             //Assert
             Assert.NotNull(ex);
@@ -176,11 +172,11 @@ namespace Test.Core.TestBases
         public virtual void Update_NullDomainPassed_ShouldThrowArgumentNullException()
         {
             //Arrange
-            var service = Factory_Service();
+            var dataService = Factory_Service();
             TEntity invalidNullDomain = null;
 
             //Act and Assert
-            Assert.Throws<ArgumentNullException>(() => service.Update(invalidNullDomain));
+            Assert.Throws<ArgumentNullException>(() => dataService.Update(invalidNullDomain));
 
         }
 
@@ -188,15 +184,15 @@ namespace Test.Core.TestBases
         public virtual void Delete_DomainWithValidIdPassed_ShouldDeleteSuccessfully()
         {
             //Arrange
-            var domain = Factory_Entity();
-            var service = Factory_Service(() => CreateARecord(domain));
-            var idValue = GetIdValueFromEntity(domain);
+            var inputEntity = Factory_Entity();
+            var dataService = Factory_Service(() => CreateTestEntity(inputEntity));
+            var idValue = GetIdValueFromEntity(inputEntity);
 
             //Act
-            service.Delete(domain);
+            dataService.Delete(inputEntity);
 
             //Assert
-            var returnObject = service.GetById(idValue);
+            var returnObject = dataService.GetById(idValue);
             Assert.Null(returnObject);
         }
 
@@ -204,26 +200,26 @@ namespace Test.Core.TestBases
         public virtual void Delete_DomainWithEmptyIdPassed_ShouldThrowException()
         {
             //Arrange
-            var domain = Factory_Entity();
-            var service = Factory_Service();
+            var inputEntity = Factory_Entity();
+            var dataService = Factory_Service();
             
             //Act
-            var ex = Record.Exception(() => service.Delete(domain));
+            var returnedException = Record.Exception(() => dataService.Delete(inputEntity));
 
             //Assert
-            Assert.NotNull(ex);
+            Assert.NotNull(returnedException);
         }
 
         [Fact]
         public virtual void Delete_DomainWithRandomIdPassed_ShouldThrowException()
         {
             //Arrange
-            var domain = Factory_Entity();
-            SetIdValueToEntity(domain, 100);//TODO: support generic
-            var service = Factory_Service();
+            var inputEntity = Factory_Entity();
+            SetIdValueToEntity(inputEntity, 100);//TODO: support generic
+            var dataService = Factory_Service();
 
             //Act
-            var ex = Record.Exception(() => service.Delete(domain));
+            var ex = Record.Exception(() => dataService.Delete(inputEntity));
 
             //Assert
             Assert.NotNull(ex);

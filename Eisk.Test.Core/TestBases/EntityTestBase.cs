@@ -35,6 +35,8 @@ namespace Test.Core.TestBases
         {
             ExpressionUtil<TEntity>.SetPropertyValue(_idExpression, entity, value);
         }
-        
+
+        protected abstract void CreateTestEntity(TEntity testEntity);
+
     }
 }

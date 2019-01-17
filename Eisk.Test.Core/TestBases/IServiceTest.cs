@@ -2,8 +2,8 @@
 
 namespace Test.Core.TestBases
 {
-    public interface IServiceTest<out T>
+    public interface IServiceTest<TEntity>
     {
-        T Factory_Service(Action action = null);
+        TEntity Factory_Service(Action action = null);
     }
 }
