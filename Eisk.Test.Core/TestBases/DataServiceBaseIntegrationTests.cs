@@ -38,7 +38,7 @@ namespace Test.Core.TestBases
             ExpressionUtil<TEntity>.SetPropertyValue(_idExpression, entity, value);
         }
 
-        protected void SetupGetById(TEntity getEntity)
+        protected void CreateARecord(TEntity getEntity)
         {
             _dataService.Add(getEntity);
         }
@@ -96,7 +96,7 @@ namespace Test.Core.TestBases
             //Arrange
             var domain = Factory_Entity();
             SetIdValueToEntity(domain, default(TId));//TODO: support for non-auto Id's
-            var service = Factory_Service(() => SetupGetById(domain));
+            var service = Factory_Service(() => CreateARecord(domain));
             var idValue = GetIdValueFromEntity(domain);
             
             //Act
@@ -145,7 +145,7 @@ namespace Test.Core.TestBases
 
             var service = Factory_Service(() =>
             {
-                SetupGetById(domainInput);
+                CreateARecord(domainInput);
             });
 
             //Act
@@ -200,6 +200,53 @@ namespace Test.Core.TestBases
             //Act and Assert
             Assert.Throws<ArgumentNullException>(() => service.Update(invalidNullDomain));
 
+        }
+
+        [Fact]
+        public virtual void Delete_DomainWithValidIdPassed_ShouldDeleteSuccessfully()
+        {
+            //Arrange
+            var domain = Factory_Entity();
+            SetIdValueToEntity(domain, default(TId));//TODO: support for non-auto Id's
+            var service = Factory_Service(() => CreateARecord(domain));
+            var idValue = GetIdValueFromEntity(domain);
+
+            //Act
+            service.Delete(domain);
+
+            //Assert
+            var returnObject = service.GetById(idValue);
+            Assert.Null(returnObject);
+        }
+
+        [Fact]
+        public virtual void Delete_DomainWithEmptyIdPassed_ShouldThrowException()
+        {
+            //Arrange
+            var domain = Factory_Entity();
+            SetIdValueToEntity(domain, default(TId));//TODO: support for non-auto Id's
+            var service = Factory_Service();
+            
+            //Act
+            var ex = Record.Exception(() => service.Delete(domain));
+
+            //Assert
+            Assert.NotNull(ex);
+        }
+
+        [Fact]
+        public virtual void Delete_DomainWithRandomIdPassed_ShouldThrowException()
+        {
+            //Arrange
+            var domain = Factory_Entity();
+            SetIdValueToEntity(domain, 100);//TODO: support generic
+            var service = Factory_Service();
+
+            //Act
+            var ex = Record.Exception(() => service.Delete(domain));
+
+            //Assert
+            Assert.NotNull(ex);
         }
     }
 }
