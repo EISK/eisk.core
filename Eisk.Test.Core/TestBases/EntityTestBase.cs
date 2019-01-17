@@ -21,8 +21,8 @@ namespace Test.Core.TestBases
             if (setIdWithDefault)
                 SetIdValueToEntity(entity, default(TId));
 
-            action(entity);
-
+            action?.Invoke(entity);
+            
             return entity;
         }
 
