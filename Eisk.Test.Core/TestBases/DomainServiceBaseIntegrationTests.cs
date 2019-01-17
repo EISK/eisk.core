@@ -11,13 +11,13 @@ namespace Test.Core.TestBases
     {
         private readonly DomainService<TEntity, TId> _domainService;
 
-        protected DomainServiceBaseIntegrationTests(Expression<Func<TEntity, TId>> idExpression, 
-            DomainService<TEntity, TId> domainService):base(idExpression)
+        protected DomainServiceBaseIntegrationTests( DomainService<TEntity, TId> domainService,
+            Expression<Func<TEntity, TId>> idExpression) :base(idExpression)
         {
             _domainService = domainService;
         }
 
-        public DomainService<TEntity, TId> Factory_Service(Action action = null)
+        public DomainService<TEntity, TId> GetServiceInstance(Action action = null)
         {
             action?.Invoke();
 
@@ -34,7 +34,7 @@ namespace Test.Core.TestBases
         {
             //Arrange
             var inputDomain = Factory_Entity();
-            var domainService = Factory_Service();
+            var domainService = GetServiceInstance();
 
             //Act
             var returnedDomain = domainService.Add(inputDomain);

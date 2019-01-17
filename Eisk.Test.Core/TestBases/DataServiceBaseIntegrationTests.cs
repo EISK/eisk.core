@@ -18,7 +18,7 @@ namespace Test.Core.TestBases
         }
 
 
-        public IEntityDataService<TEntity> Factory_Service(Action action = null)
+        public IEntityDataService<TEntity> GetServiceInstance(Action action = null)
         {
             action?.Invoke();
 
@@ -35,7 +35,7 @@ namespace Test.Core.TestBases
         {
             //Arrange
             var inputEntity = Factory_Entity();
-            var dataService = Factory_Service();
+            var dataService = GetServiceInstance();
 
             //Act
             var returnedEntity = dataService.Add(inputEntity);
@@ -52,7 +52,7 @@ namespace Test.Core.TestBases
             var inputEntity = Factory_Entity();
             //might pass for sql lite, but fail for sql server
             SetIdValueToEntity(inputEntity, 100);//TODO: support for generic
-            var dataService = Factory_Service();
+            var dataService = GetServiceInstance();
 
             //Act
             var returnedEntity = dataService.Add(inputEntity);
@@ -66,7 +66,7 @@ namespace Test.Core.TestBases
         public virtual void Add_NullDomainPassed_ShouldThrowArgumentNullException()
         {
             //Arrange
-            var dataService = Factory_Service();
+            var dataService = GetServiceInstance();
             TEntity invalidNullDomain = null;
             
             //Act and Assert
@@ -79,7 +79,7 @@ namespace Test.Core.TestBases
         {
             //Arrange
             var domain = Factory_Entity();
-            var dataService = Factory_Service(() => CreateTestEntity(domain));
+            var dataService = GetServiceInstance(() => CreateTestEntity(domain));
             var idValue = GetIdValueFromEntity(domain);
             
             //Act
@@ -94,7 +94,7 @@ namespace Test.Core.TestBases
         public virtual void GetById_EmptyIdPassed_ShouldReturnNull()
         {
             //Arrange
-            var dataService = Factory_Service();
+            var dataService = GetServiceInstance();
             
             //Act
             var returnedEntity = dataService.GetById(default(TId));
@@ -108,7 +108,7 @@ namespace Test.Core.TestBases
         public virtual void GetById_InvalidIdPassed_ShouldReturnNull()
         {
             //Arrange
-            var dataService = Factory_Service();
+            var dataService = GetServiceInstance();
 
             //Act
             var returnedEntity = dataService.GetById(100);//TODO: make it generic random
@@ -123,7 +123,7 @@ namespace Test.Core.TestBases
         {
             //Arrange
             var inputEntity = Factory_Entity();
-            var dataService = Factory_Service(() =>
+            var dataService = GetServiceInstance(() =>
             {
                 CreateTestEntity(inputEntity);
             });
@@ -142,7 +142,7 @@ namespace Test.Core.TestBases
         {
             //Arrange
             var inputEntity = Factory_Entity();
-            var dataService = Factory_Service();
+            var dataService = GetServiceInstance();
 
             //Act
             var returnedEntity = dataService.Update(inputEntity);//may not be supported in all data providers
@@ -159,7 +159,7 @@ namespace Test.Core.TestBases
             //Arrange
             var entityWithRandomId = Factory_Entity();
             SetIdValueToEntity(entityWithRandomId, 100);//TODO: support generic
-            var dataService = Factory_Service();
+            var dataService = GetServiceInstance();
 
             //Act
             var ex = Record.Exception(() => dataService.Update(entityWithRandomId));
@@ -172,7 +172,7 @@ namespace Test.Core.TestBases
         public virtual void Update_NullDomainPassed_ShouldThrowArgumentNullException()
         {
             //Arrange
-            var dataService = Factory_Service();
+            var dataService = GetServiceInstance();
             TEntity invalidNullDomain = null;
 
             //Act and Assert
@@ -185,7 +185,7 @@ namespace Test.Core.TestBases
         {
             //Arrange
             var inputEntity = Factory_Entity();
-            var dataService = Factory_Service(() => CreateTestEntity(inputEntity));
+            var dataService = GetServiceInstance(() => CreateTestEntity(inputEntity));
             var idValue = GetIdValueFromEntity(inputEntity);
 
             //Act
@@ -201,7 +201,7 @@ namespace Test.Core.TestBases
         {
             //Arrange
             var inputEntity = Factory_Entity();
-            var dataService = Factory_Service();
+            var dataService = GetServiceInstance();
             
             //Act
             var returnedException = Record.Exception(() => dataService.Delete(inputEntity));
@@ -216,7 +216,7 @@ namespace Test.Core.TestBases
             //Arrange
             var inputEntity = Factory_Entity();
             SetIdValueToEntity(inputEntity, 100);//TODO: support generic
-            var dataService = Factory_Service();
+            var dataService = GetServiceInstance();
 
             //Act
             var ex = Record.Exception(() => dataService.Delete(inputEntity));
