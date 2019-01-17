@@ -1,45 +1,49 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Core.DataService;
 using Core.DomainService;
+using Xunit;
 
 namespace Test.Core.TestBases
 {
-    public abstract class DomainServiceBaseIntegrationTests<TEntity, TId> : DomainServiceBaseTests<TEntity, TId>
+    public abstract class DomainServiceBaseIntegrationTests<TEntity, TId> : EntityServiceTestBase<TEntity, TId>,
+        IServiceTest<DomainService<TEntity,TId>>
         where TEntity : class, new()
     {
-        private readonly IEntityDataService<TEntity> _dataService;
-
         private readonly DomainService<TEntity, TId> _domainService;
 
         protected DomainServiceBaseIntegrationTests(Expression<Func<TEntity, TId>> idExpression, 
-            DomainService<TEntity, TId> domainService):
-            base(idExpression)
+            DomainService<TEntity, TId> domainService):base(idExpression)
         {
             _domainService = domainService;
-            _dataService = _domainService.EntityDataService;
         }
 
-        public override DomainService<TEntity, TId> Factory_Service(Action action = null)
+        public DomainService<TEntity, TId> Factory_Service(Action action = null)
         {
             action?.Invoke();
 
             return _domainService;
         }
 
-        #region Test data setups
-
-        protected override TEntity Factory_EntityWithId(Action<TEntity> action = null)
+        protected void CreateARecord(TEntity getEntity)
         {
-            return Factory_Entity(action);
+            _domainService.Add(getEntity);
         }
 
-        protected override void SetIdAndSetupGetById(TEntity getEntity)
+        [Fact]
+        public virtual void Add_ValidDomainPassed_ShouldReturnDomainAfterCreation()
         {
-            _dataService.Add(getEntity);
+            //Arrange
+            var domainInput = Factory_Entity();
+            SetIdValueToEntity(domainInput, default(TId));//TODO: support for non-auto Id's
+
+            var service = Factory_Service();
+
+            //Act
+            var domainReturned = service.Add(domainInput);
+
+            //Assert
+            Assert.NotNull(domainReturned);
+            Assert.NotEqual(default(TId), GetIdValueFromEntity(domainReturned));
         }
-
-        #endregion
-
     }
 }

@@ -1,23 +1,20 @@
 ﻿using System;
 using System.Linq.Expressions;
 using Core.DataService;
-using Core.Utils;
 using Xunit;
 
 namespace Test.Core.TestBases
 {
-    public class DataServiceBaseIntegrationTests<TEntity, TId> : EntityTestBase<TEntity>, 
+    public class DataServiceBaseIntegrationTests<TEntity, TId> : EntityServiceTestBase<TEntity, TId>,
         IServiceTest<IEntityDataService<TEntity>>
         where TEntity : class, new()
     {
         private readonly IEntityDataService<TEntity> _dataService;
 
-        private readonly Expression<Func<TEntity, TId>> _idExpression;
-
         protected DataServiceBaseIntegrationTests(IEntityDataService<TEntity> dataService, Expression<Func<TEntity, TId>> idExpression)
+            :base(idExpression)
         {
             _dataService = dataService;
-            _idExpression = idExpression;
         }
 
 
@@ -26,16 +23,6 @@ namespace Test.Core.TestBases
             action?.Invoke();
 
             return _dataService;
-        }
-
-        protected TId GetIdValueFromEntity(TEntity entity)
-        {
-            return (TId)ExpressionUtil<TEntity>.GetPropertyValue(_idExpression, entity);
-        }
-
-        private void SetIdValueToEntity(TEntity entity, object value)
-        {
-            ExpressionUtil<TEntity>.SetPropertyValue(_idExpression, entity, value);
         }
 
         protected void CreateARecord(TEntity getEntity)
