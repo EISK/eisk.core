@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Test.Core.TestBases
 {
-    public class DataServiceBaseIntegrationTests<TEntity, TId> : EntityServiceTestBase<TEntity, TId>,
+    public class DataServiceBaseIntegrationTests<TEntity, TId> : EntityTestBase<TEntity, TId>,
         IServiceTest<IEntityDataService<TEntity>>
         where TEntity : class, new()
     {
@@ -35,8 +35,7 @@ namespace Test.Core.TestBases
         {
             //Arrange
             var domainInput = Factory_Entity();
-            SetIdValueToEntity(domainInput, default(TId));//TODO: support for non-auto Id's
-
+            
             var service = Factory_Service();
 
             //Act
@@ -82,7 +81,6 @@ namespace Test.Core.TestBases
         {
             //Arrange
             var domain = Factory_Entity();
-            SetIdValueToEntity(domain, default(TId));//TODO: support for non-auto Id's
             var service = Factory_Service(() => CreateARecord(domain));
             var idValue = GetIdValueFromEntity(domain);
             
@@ -98,7 +96,6 @@ namespace Test.Core.TestBases
         public virtual void GetById_EmptyIdPassed_ShouldReturnNull()
         {
             //Arrange
-            var domain = Factory_Entity();
             var service = Factory_Service();
             
             //Act
@@ -128,8 +125,7 @@ namespace Test.Core.TestBases
         {
             //Arrange
             var domainInput = Factory_Entity();
-            SetIdValueToEntity(domainInput, default(TId));//TODO: support for non-auto Id's
-
+            
             var service = Factory_Service(() =>
             {
                 CreateARecord(domainInput);
@@ -149,8 +145,7 @@ namespace Test.Core.TestBases
         {
             //Arrange
             var domainInput = Factory_Entity();
-            SetIdValueToEntity(domainInput, default(TId));//TODO: support for non-auto Id's
-
+            
             var service = Factory_Service();
 
             //Act
@@ -194,7 +189,6 @@ namespace Test.Core.TestBases
         {
             //Arrange
             var domain = Factory_Entity();
-            SetIdValueToEntity(domain, default(TId));//TODO: support for non-auto Id's
             var service = Factory_Service(() => CreateARecord(domain));
             var idValue = GetIdValueFromEntity(domain);
 
@@ -211,7 +205,6 @@ namespace Test.Core.TestBases
         {
             //Arrange
             var domain = Factory_Entity();
-            SetIdValueToEntity(domain, default(TId));//TODO: support for non-auto Id's
             var service = Factory_Service();
             
             //Act

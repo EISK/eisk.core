@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Test.Core.TestBases
 {
-    public abstract class DomainServiceBaseIntegrationTests<TEntity, TId> : EntityServiceTestBase<TEntity, TId>,
+    public abstract class DomainServiceBaseIntegrationTests<TEntity, TId> : EntityTestBase<TEntity, TId>,
         IServiceTest<DomainService<TEntity,TId>>
         where TEntity : class, new()
     {
