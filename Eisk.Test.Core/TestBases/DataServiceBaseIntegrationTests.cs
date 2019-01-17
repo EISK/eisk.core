@@ -48,7 +48,25 @@ namespace Test.Core.TestBases
         {
             //Arrange
             var domainInput = Factory_Entity();
-            SetIdValueToEntity(domainInput, default(TId));
+            SetIdValueToEntity(domainInput, default(TId));//TODO: support for non-auto Id's
+
+            var service = Factory_Service();
+
+            //Act
+            var domainReturned = service.Add(domainInput);
+
+            //Assert
+            Assert.NotNull(domainReturned);
+            Assert.NotEqual(default(TId), GetIdValueFromEntity(domainReturned));
+        }
+
+        [Fact]
+        public virtual void Add_ValidDomainWithRandomIdPassed_ShouldReturnDomainAfterCreation()
+        {
+            //Arrange
+            var domainInput = Factory_Entity();
+            //might pass for sql lite, but fail for sql server
+            SetIdValueToEntity(domainInput, 100);//TODO: support for generic
 
             var service = Factory_Service();
 
@@ -65,10 +83,10 @@ namespace Test.Core.TestBases
         {
             //Arrange
             var service = Factory_Service();
-
-
+            TEntity invalidNullDomain = null;
+            
             //Act and Assert
-            Assert.Throws<ArgumentNullException>(() => service.Add(null));
+            Assert.Throws<ArgumentNullException>(() => service.Add(invalidNullDomain));
 
         }
 
@@ -77,6 +95,7 @@ namespace Test.Core.TestBases
         {
             //Arrange
             var domain = Factory_Entity();
+            SetIdValueToEntity(domain, default(TId));//TODO: support for non-auto Id's
             var service = Factory_Service(() => SetupGetById(domain));
             var idValue = GetIdValueFromEntity(domain);
             
@@ -89,7 +108,7 @@ namespace Test.Core.TestBases
         }
 
         [Fact]
-        public virtual void GetById_InvalidIdPassed_ShouldReturnNull()
+        public virtual void GetById_EmptyIdPassed_ShouldReturnNull()
         {
             //Arrange
             var domain = Factory_Entity();
@@ -104,10 +123,26 @@ namespace Test.Core.TestBases
         }
 
         [Fact]
+        public virtual void GetById_InvalidIdPassed_ShouldReturnNull()
+        {
+            //Arrange
+            var service = Factory_Service();
+
+            //Act
+            var domainReturned = service.GetById(100);//TODO: make it generic random
+
+            //Assert
+            Assert.Null(domainReturned);
+
+        }
+
+        [Fact]
         public virtual void Update_ValidDomainPassed_ShouldReturnDomain()
         {
             //Arrange
             var domainInput = Factory_Entity();
+            SetIdValueToEntity(domainInput, default(TId));//TODO: support for non-auto Id's
+
             var service = Factory_Service(() =>
             {
                 SetupGetById(domainInput);
@@ -123,18 +158,48 @@ namespace Test.Core.TestBases
         }
 
         [Fact]
-        public virtual void Update_ValidDomainPassed_()
+        public virtual void Update_ValidDomainWithEmptyIdPassed_ShouldCreateDomain()
         {
             //Arrange
             var domainInput = Factory_Entity();
-            //SetIdValueToEntity(domainInput, default(TId));
+            SetIdValueToEntity(domainInput, default(TId));//TODO: support for non-auto Id's
+
             var service = Factory_Service();
 
             //Act
             var domainReturned = service.Update(domainInput);
-            
+
+            //Assert
+            Assert.NotNull(domainReturned);
+            Assert.NotEqual(default(TId), GetIdValueFromEntity(domainReturned));
 
         }
 
+        [Fact]
+        public virtual void Update_ValidDomainWithRandomIdPassed_ShouldThrowException()
+        {
+            //Arrange
+            var domainWithRandomId = Factory_Entity();
+            SetIdValueToEntity(domainWithRandomId, 100);//TODO: support generic
+            var service = Factory_Service();
+
+            //Act
+            var ex = Record.Exception(() => service.Update(domainWithRandomId));
+
+            //Assert
+            Assert.NotNull(ex);
+        }
+
+        [Fact]
+        public virtual void Update_NullDomainPassed_ShouldThrowArgumentNullException()
+        {
+            //Arrange
+            var service = Factory_Service();
+            TEntity invalidNullDomain = null;
+
+            //Act and Assert
+            Assert.Throws<ArgumentNullException>(() => service.Update(invalidNullDomain));
+
+        }
     }
 }
