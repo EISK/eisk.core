@@ -4,11 +4,11 @@ using System;
 
 namespace Test.Core.DataGen
 {
-    public class EntityDataFactory<TEntity>
+    public class DomainDataFactory<TEntity>
     {
         public static TEntity Create_Entity(Action<TEntity> action = null, Action<Fixture> fixtureAction = null)
         {
-            return new EntityDataFactory<TEntity>().Factory_Entity(action, fixtureAction);
+            return new DomainDataFactory<TEntity>().Factory_Entity(action, fixtureAction);
         }
 
         public virtual TEntity Factory_Entity(Action<TEntity> action = null, Action<Fixture> fixtureAction = null)

@@ -35,7 +35,7 @@ namespace Test.Core.TestBases
 
         protected TEntity Factory_Entity<TEntity>(Action<TEntity> action = null)
         {
-            return EntityDataFactory<TEntity>.Create_Entity(action);
+            return DomainDataFactory<TEntity>.Create_Entity(action);
         }
     }
 }

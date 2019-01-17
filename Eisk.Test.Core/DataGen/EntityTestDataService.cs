@@ -4,17 +4,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Test.Core.DataGen
 {
-    public class EntityTestDataService<TEntity> : EntityContextDataService<TEntity>
+    public class EntityTestDataService<TEntity> 
         where TEntity : class, new()
     {
-        public EntityTestDataService(DbContext dbContext) : base(dbContext)
+        EntityContextDataService<TEntity> _entityContextDataService;
+        public EntityTestDataService(DbContext dbContext)
         {
+            _entityContextDataService = new EntityContextDataService<TEntity>(dbContext);
         }
 
         public virtual TEntity Add_TestData_InStore(Action<TEntity> action = null)
         {
-            var entity = EntityDataFactory<TEntity>.Create_Entity(action);
-            return Add(entity);
+            var entity = DomainDataFactory<TEntity>.Create_Entity(action);
+            return _entityContextDataService.Add(entity);
         }
     }
 }
