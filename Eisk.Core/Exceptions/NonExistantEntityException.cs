@@ -4,7 +4,7 @@
         
     {
         public NonExistantEntityException(object paramValue, string paramName = "id") : base(
-            $"No {typeof(T).Name} exists for given id {paramValue} for parameter {paramName}.", "APP-DATA-ERROR-001")
+            $"No {typeof(T).Name} exists for given id {paramValue} for parameter {paramName}.", "APP-DATA-ERROR-002")
         {
             
         }
