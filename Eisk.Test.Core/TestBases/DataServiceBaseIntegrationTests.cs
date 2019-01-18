@@ -18,7 +18,7 @@ namespace Eisk.Test.Core.TestBases
         }
 
 
-        public IEntityDataService<TEntity> GetServiceInstance(Action action = null)
+        public virtual IEntityDataService<TEntity> GetServiceInstance(Action action = null)
         {
             action?.Invoke();
 

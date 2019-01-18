@@ -17,7 +17,7 @@ namespace Eisk.Test.Core.TestBases
             _domainService = domainService;
         }
 
-        public DomainService<TEntity, TId> GetServiceInstance(Action action = null)
+        public virtual DomainService<TEntity, TId> GetServiceInstance(Action action = null)
         {
             action?.Invoke();
 
