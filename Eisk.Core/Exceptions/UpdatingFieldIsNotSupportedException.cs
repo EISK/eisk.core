@@ -1,9 +1,10 @@
-﻿namespace Core.Exceptions
+﻿namespace Eisk.Core.Exceptions
 {
     public class UpdatingIdIsNotSupported<TEntity>: CoreException
         
     {
-        public UpdatingIdIsNotSupported(object paramValue, string paramName = "id") : base(string.Format("Updating {0} field {1} is not supported. Provided value: {2}.", typeof(TEntity).Name,  paramName, paramValue), "APP-DATA-ERROR-001")
+        public UpdatingIdIsNotSupported(object paramValue, string paramName = "id") : base(
+            $"Updating {typeof(TEntity).Name} field {paramName} is not supported. Provided value: {paramValue}.", "APP-DATA-ERROR-001")
         {
             
         }

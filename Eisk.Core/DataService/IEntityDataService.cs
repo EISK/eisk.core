@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace Core.DataService
+namespace Eisk.Core.DataService
 {
     public interface IEntityDataService<TEntity> where TEntity : class, new()
     {

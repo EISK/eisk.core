@@ -1,4 +1,4 @@
-﻿namespace Core.ExtensionMethods
+﻿namespace Eisk.Core.ExtensionMethods
 {
     public static class ObjectExtensions
     {
@@ -8,13 +8,6 @@
                 return string.IsNullOrEmpty(value as string);
 
             return value == null || value.Equals(default(T));
-        }
-
-        public static T EmptyIfNull<T>(this T obj) where T : new()
-        {
-            if (obj == null) return new T();
-
-            return obj;
         }
     }
 }

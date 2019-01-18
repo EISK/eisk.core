@@ -1,45 +1,48 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Core.DataService;
-using Core.DomainService;
+using Eisk.Core.DomainService;
+using Xunit;
 
-namespace Test.Core.TestBases
+namespace Eisk.Test.Core.TestBases
 {
-    public abstract class DomainServiceBaseIntegrationTests<TEntity, TId> : DomainServiceBaseTests<TEntity, TId>
+    public abstract class DomainServiceBaseIntegrationTests<TEntity, TId> : EntityTestBase<TEntity, TId>,
+        IServiceTest<DomainService<TEntity, TId>>
         where TEntity : class, new()
     {
-        private readonly IEntityDataService<TEntity> _dataService;
-
         private readonly DomainService<TEntity, TId> _domainService;
 
-        protected DomainServiceBaseIntegrationTests(Expression<Func<TEntity, TId>> idExpression, 
-            DomainService<TEntity, TId> domainService):
-            base(idExpression)
+        protected DomainServiceBaseIntegrationTests( DomainService<TEntity, TId> domainService,
+            Expression<Func<TEntity, TId>> idExpression) :base(idExpression)
         {
             _domainService = domainService;
-            _dataService = _domainService.EntityDataService;
         }
 
-        public override DomainService<TEntity, TId> Factory_Service(Action action = null)
+        public DomainService<TEntity, TId> GetServiceInstance(Action action = null)
         {
             action?.Invoke();
 
             return _domainService;
         }
 
-        #region Test data setups
-
-        protected override TEntity Factory_EntityWithId(Action<TEntity> action = null)
+        protected virtual void CreateTestEntity(TEntity testEntity)
         {
-            return Factory_Entity(action);
+            _domainService.Add(testEntity);
         }
 
-        protected override void SetIdAndSetupGetById(TEntity getEntity)
+        [Fact]
+        public virtual void Add_ValidDomainPassed_ShouldReturnDomainAfterCreation()
         {
-            _dataService.Add(getEntity);
+            //Arrange
+            var inputDomain = Factory_Entity();
+            var domainService = GetServiceInstance();
+
+            //Act
+            var returnedDomain = domainService.Add(inputDomain);
+
+            //Assert
+            Assert.NotNull(returnedDomain);
+            Assert.NotEqual(default(TId), GetIdValueFromEntity(returnedDomain));
         }
-
-        #endregion
-
+        
     }
 }

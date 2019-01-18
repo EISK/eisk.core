@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using AutoFixture.Kernel;
-using Core.Validations.Attributes;
+using Eisk.Core.Validations.Attributes;
 
-namespace Test.Core.DataGen
+namespace Eisk.Test.Core.DataGen
 {
     public class StringAttributeAggregatedRelay : ISpecimenBuilder
     {
