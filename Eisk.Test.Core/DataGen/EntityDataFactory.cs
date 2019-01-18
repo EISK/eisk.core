@@ -1,8 +1,8 @@
-﻿using AutoFixture;
+﻿using System;
+using AutoFixture;
 using AutoFixture.DataAnnotations;
-using System;
 
-namespace Test.Core.DataGen
+namespace Eisk.Test.Core.DataGen
 {
     public class EntityDataFactory<TEntity>
     {

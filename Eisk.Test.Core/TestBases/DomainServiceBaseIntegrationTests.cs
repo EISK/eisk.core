@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Core.DomainService;
+using Eisk.Core.DomainService;
 using Xunit;
 
-namespace Test.Core.TestBases
+namespace Eisk.Test.Core.TestBases
 {
     public abstract class DomainServiceBaseIntegrationTests<TEntity, TId> : EntityTestBase<TEntity, TId>,
-        IServiceTest<DomainService<TEntity,TId>>
+        IServiceTest<DomainService<TEntity, TId>>
         where TEntity : class, new()
     {
         private readonly DomainService<TEntity, TId> _domainService;
@@ -24,7 +24,7 @@ namespace Test.Core.TestBases
             return _domainService;
         }
 
-        protected override void CreateTestEntity(TEntity testEntity)
+        protected virtual void CreateTestEntity(TEntity testEntity)
         {
             _domainService.Add(testEntity);
         }

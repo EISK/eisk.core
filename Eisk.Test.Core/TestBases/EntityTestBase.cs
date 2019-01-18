@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Core.Utils;
+using Eisk.Core.Utils;
 
-namespace Test.Core.TestBases
+namespace Eisk.Test.Core.TestBases
 {
     public abstract class EntityTestBase<TEntity, TId> : TestBase
         where TEntity : class, new()
     {
-        protected readonly Expression<Func<TEntity, TId>> _idExpression;
+        protected readonly Expression<Func<TEntity, TId>> DbIdExpression;
         
         protected EntityTestBase(Expression<Func<TEntity, TId>> idExpression)
         {
-            _idExpression = idExpression;
+            DbIdExpression = idExpression;
         }
 
         protected virtual TEntity Factory_Entity(Action<TEntity> action = null, bool setIdWithDefault = true)
@@ -28,15 +28,12 @@ namespace Test.Core.TestBases
 
         protected TId GetIdValueFromEntity(TEntity entity)
         {
-            return (TId)ExpressionUtil<TEntity>.GetPropertyValue(_idExpression, entity);
+            return (TId)ExpressionUtil<TEntity>.GetPropertyValue(DbIdExpression, entity);
         }
 
         protected void SetIdValueToEntity(TEntity entity, object value)
         {
-            ExpressionUtil<TEntity>.SetPropertyValue(_idExpression, entity, value);
+            ExpressionUtil<TEntity>.SetPropertyValue(DbIdExpression, entity, value);
         }
-
-        protected abstract void CreateTestEntity(TEntity testEntity);
-
     }
 }

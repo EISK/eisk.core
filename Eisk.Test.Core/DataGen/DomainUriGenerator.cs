@@ -1,8 +1,8 @@
-﻿using AutoFixture;
+﻿using System;
+using AutoFixture;
 using AutoFixture.Kernel;
-using System;
 
-namespace Test.Core.DataGen
+namespace Eisk.Test.Core.DataGen
 {
     /// <summary>
     /// Creates new <see cref="Uri"/> instances.

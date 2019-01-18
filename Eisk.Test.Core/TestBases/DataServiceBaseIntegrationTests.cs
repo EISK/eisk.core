@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Core.DataService;
+using Eisk.Core.DataService;
 using Xunit;
 
-namespace Test.Core.TestBases
+namespace Eisk.Test.Core.TestBases
 {
     public class DataServiceBaseIntegrationTests<TEntity, TId> : EntityTestBase<TEntity, TId>,
         IServiceTest<IEntityDataService<TEntity>>
@@ -25,7 +25,7 @@ namespace Test.Core.TestBases
             return _dataService;
         }
 
-        protected override void CreateTestEntity(TEntity testEntity)
+        protected virtual void CreateTestEntity(TEntity testEntity)
         {
             _dataService.Add(testEntity);
         }

@@ -1,9 +1,9 @@
 ﻿using System;
-using Core.Exceptions;
-using Test.Core.DataGen;
+using Eisk.Core.Exceptions;
+using Eisk.Test.Core.DataGen;
 using Xunit;
 
-namespace Test.Core.TestBases
+namespace Eisk.Test.Core.TestBases
 {
     public abstract class TestBase
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Core.Validations.Attributes
+namespace Eisk.Core.Validations.Attributes
 {
     public class UriAttribute : ValidationAttribute
     {

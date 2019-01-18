@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Test.Core.DataGen
+namespace Eisk.Test.Core.DataGen
 {
     public class IntegerValueGenerator
     {

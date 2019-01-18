@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Reflection;
-using Core.Exceptions;
+using Eisk.Core.Exceptions;
 
-namespace Core.Utils
+namespace Eisk.Core.Utils
 {
     public static class ExpressionUtil<TDomain>
     {

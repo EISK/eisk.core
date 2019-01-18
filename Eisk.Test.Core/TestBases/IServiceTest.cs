@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Test.Core.TestBases
+namespace Eisk.Test.Core.TestBases
 {
-    public interface IServiceTest<TEntity>
+    public interface IServiceTest<out TEntity>
     {
         TEntity GetServiceInstance(Action action = null);
     }
