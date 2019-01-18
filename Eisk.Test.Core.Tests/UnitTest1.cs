@@ -1,5 +1,3 @@
-using System;
-using Test.Core.DataGen;
 using Xunit;
 
 namespace Eisk.Test.Core.Tests

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 
-namespace Core.DataService
+namespace Eisk.Core.DataService.EntityFrameworkCore
 {
     public class EntityContextDataService<TEntity> : IEntityDataService<TEntity> where TEntity : class, new()
     {

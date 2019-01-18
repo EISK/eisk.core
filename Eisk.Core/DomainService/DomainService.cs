@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Core.DataService;
-using Core.Exceptions;
-using Core.ExtensionMethods;
-using Core.Utils;
+using Eisk.Core.DataService;
+using Eisk.Core.Exceptions;
+using Eisk.Core.ExtensionMethods;
+using Eisk.Core.Utils;
 
-namespace Core.DomainService
+namespace Eisk.Core.DomainService
 {
     public class DomainService<TDomain, TId>
         where TDomain : class, new()

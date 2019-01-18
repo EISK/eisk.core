@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Core.Exceptions
+namespace Eisk.Core.Exceptions
 {
     public class CoreException : Exception
     {
