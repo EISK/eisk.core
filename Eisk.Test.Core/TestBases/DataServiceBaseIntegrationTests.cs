@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Eisk.Test.Core.TestBases
 {
-    public class DataServiceBaseIntegrationTests<TEntity, TId> : EntityTestBase<TEntity, TId>,
+    public abstract class DataServiceBaseIntegrationTests<TEntity, TId> : EntityTestBase<TEntity, TId>,
         IServiceTest<IEntityDataService<TEntity>>
         where TEntity : class, new()
     {
