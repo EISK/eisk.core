@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Eisk.Core.DataService;
 using Eisk.Core.Exceptions;
-using Eisk.Core.ExtensionMethods;
 using Eisk.Core.Utils;
 
 namespace Eisk.Core.DomainService

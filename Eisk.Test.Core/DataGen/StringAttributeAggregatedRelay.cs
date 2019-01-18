@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using AutoFixture.Kernel;
-using Eisk.Core.Validations.Attributes;
+using Eisk.Core.Utils;
 
 namespace Eisk.Test.Core.DataGen
 {
