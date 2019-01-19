@@ -35,7 +35,7 @@ namespace Eisk.Test.Core.TestBases
 
         protected TEntity Factory_Entity<TEntity>(Action<TEntity> action = null)
         {
-            return EntityDataFactory<TEntity>.Create_Entity(action);
+            return EntityDataFactory<TEntity>.Factory_Entity_Instance(action);
         }
     }
 }
