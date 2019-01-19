@@ -6,7 +6,7 @@ namespace Eisk.Test.Core.DataGen
 {
     public class EntityDataFactory<TEntity>
     {
-        public static TEntity Create_Entity(Action<TEntity> action = null, Action<Fixture> fixtureAction = null)
+        public static TEntity Factory_Entity_Instance(Action<TEntity> action = null, Action<Fixture> fixtureAction = null)
         {
             return new EntityDataFactory<TEntity>().Factory_Entity(action, fixtureAction);
         }
