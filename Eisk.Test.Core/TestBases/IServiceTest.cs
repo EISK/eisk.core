@@ -2,8 +2,8 @@
 
 namespace Eisk.Test.Core.TestBases
 {
-    public interface IServiceTest<out TEntity>
+    public interface IServiceTest<out TService>
     {
-        TEntity GetServiceInstance(Action action = null);
+        TService GetServiceInstance(Action action = null);
     }
 }

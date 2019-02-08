@@ -10,7 +10,7 @@ namespace Eisk.Core.Utils
         public static object GetPropertyValue<TField>(Expression<Func<TDomain, TField>> expression, TDomain data)
         {
             if (data == null)
-                ThrowExceptionForNullInputEntity();
+                throw new NullInputEntityException<TDomain>();
 
             var prop = GetPropertyInfo(expression);
             var value = prop.GetValue(data);
@@ -20,7 +20,7 @@ namespace Eisk.Core.Utils
         public static void SetPropertyValue<TField>(Expression<Func<TDomain, TField>> expression, TDomain data, object value)
         {
             if (data == null)
-                ThrowExceptionForNullInputEntity();
+                throw new NullInputEntityException<TDomain>();
 
             var prop = GetPropertyInfo(expression);
             prop.SetValue(data, value);
@@ -31,11 +31,5 @@ namespace Eisk.Core.Utils
             var expr = (MemberExpression)expression.Body;
             return (PropertyInfo)expr.Member;
         }
-
-        public static void ThrowExceptionForNullInputEntity()
-        {
-            ExceptionThrower.Throws<NullInputEntityException>();
-        }
-
     }
 }
