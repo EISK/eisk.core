@@ -46,23 +46,6 @@ namespace Eisk.Test.Core.TestBases
             Assert.NotEqual(default(TId), GetIdValueFromEntity(returnedEntity));
         }
 
-        //[Fact]
-        //public virtual async Task Add_ValidDomainWithRandomIdPassed_ShouldReturnDomainAfterCreation()
-        //{
-        //    //Arrange
-        //    var inputEntity = Factory_Entity();
-        //    //might pass for sql lite, but fail for sql server
-        //    SetIdValueToEntity(inputEntity, 100);//TODO: support for generic
-        //    var domainService = GetServiceInstance();
-
-        //    //Act
-        //    var returnedEntity = await domainService.Add(inputEntity);
-
-        //    //Assert
-        //    Assert.NotNull(returnedEntity);
-        //    Assert.NotEqual(default(TId), GetIdValueFromEntity(returnedEntity));
-        //}
-
         [Fact]
         public virtual async Task Add_NullDomainPassed_ShouldThrowArgumentNullException()
         {
@@ -107,20 +90,6 @@ namespace Eisk.Test.Core.TestBases
 
         }
 
-        //[Fact]
-        //public virtual async Task GetById_InvalidIdPassed_ShouldReturnNull()
-        //{
-        //    //Arrange
-        //    var domainService = GetServiceInstance();
-
-        //    //Act
-        //    var returnedEntity = await domainService.GetById(100);//TODO: make it generic random
-
-        //    //Assert
-        //    Assert.Null(returnedEntity);
-
-        //}
-
         [Fact]
         public virtual async Task Update_ValidDomainPassed_ShouldReturnDomain()
         {
@@ -141,33 +110,18 @@ namespace Eisk.Test.Core.TestBases
 
         }
 
-        //[Fact]
-        //public virtual async Task Update_ValidDomainWithRandomIdPassed_ShouldThrowException()
-        //{
-        //    //Arrange
-        //    var entityWithRandomId = Factory_Entity();
-        //    SetIdValueToEntity(entityWithRandomId, 100);//TODO: support generic
-        //    var domainService = GetServiceInstance();
+        [Fact]
+        public virtual async Task Update_EmptyIdPassed_ShouldThrowException()
+        {
+            //Arrange
+            var domainService = GetServiceInstance();
+            var emptyIdValue = default(TId);
+            TEntity dummayObject = null;
 
-        //    //Act
-        //    var ex = await Record.ExceptionAsync(async () => await domainService.Update(entityWithRandomId));
+            //Act + Assert
+            await Assert.ThrowsAsync<InvalidLookupIdParameterException<TEntity>>(() => domainService.Update(emptyIdValue, dummayObject));
 
-        //    //Assert
-        //    Assert.NotNull(ex);
-        //}
-
-        //[Fact]
-        //public virtual async Task Update_NullDomainPassed_ShouldThrowArgumentNullException()
-        //{
-        //    //Arrange
-        //    var domainService = GetServiceInstance();
-        //    TEntity invalidNullDomain = null;
-        //    var dummayIdValue = 1212; //random
-
-        //    //Act and Assert
-        //    await Assert.ThrowsAsync<ArgumentNullException>(() => domainService.Update(dummayIdValue, invalidNullDomain));
-
-        //}
+        }
 
         [Fact]
         public virtual async Task Delete_DomainWithValidIdPassed_ShouldDeleteSuccessfully()
@@ -194,21 +148,5 @@ namespace Eisk.Test.Core.TestBases
             await Assert.ThrowsAsync<InvalidLookupIdParameterException<TEntity>>(() => domainService.Delete(emptyIdValue));
             
         }
-
-        //[Fact]
-        //public virtual async Task Delete_DomainWithRandomIdPassed_ShouldThrowException()
-        //{
-        //    //Arrange
-        //    var inputEntity = Factory_Entity();
-        //    SetIdValueToEntity(inputEntity, 100);//TODO: support generic
-        //    var domainService = GetServiceInstance();
-
-        //    //Act
-        //    var ex = await Record.ExceptionAsync(() => domainService.Delete(inputEntity));
-
-        //    //Assert
-        //    Assert.NotNull(ex);
-        //}
-
     }
 }
