@@ -193,7 +193,7 @@ namespace Eisk.Test.Core.TestBases
             await dataService.Delete(inputEntity);
 
             //Assert
-            var returnObject = dataService.GetById(idValue);
+            var returnObject = await dataService.GetById(idValue);
             Assert.Null(returnObject);
         }
 
