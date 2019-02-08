@@ -80,7 +80,11 @@ namespace Eisk.Test.Core.TestBases
         {
             //Arrange
             var domain = Factory_Entity();
-            var dataService = GetServiceInstance(async () => await CreateTestEntityToStore(domain));
+            var dataService = GetServiceInstance(async () => 
+            { 
+                await CreateTestEntityToStore(domain);
+            });
+
             var idValue = GetIdValueFromEntity(domain);
             
             //Act
