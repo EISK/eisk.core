@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Eisk.Core.DataService.EFCore
 {
-    public class EntityContextDataService<TEntity> : IEntityDataService<TEntity> where TEntity : class, new()
+    public class EntityDataService<TEntity> : IEntityDataService<TEntity> where TEntity : class, new()
     {
         protected readonly DbContext DbContext;
 
-        public EntityContextDataService(DbContext dbContext)
+        public EntityDataService(DbContext dbContext)
         {
             DbContext = dbContext;
         }
