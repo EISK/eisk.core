@@ -1,44 +1,45 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Eisk.Core.DataService;
 using Xunit;
 
 namespace Eisk.Test.Core.TestBases
 {
     public abstract class DataServiceBaseIntegrationTests<TEntity, TId> : EntityTestBase<TEntity, TId>,
-        IServiceTest<IEntityDataService<TEntity>>
+        IServiceTest<IEntityDataServiceAsync<TEntity>>
         where TEntity : class, new()
     {
-        private readonly IEntityDataService<TEntity> _dataService;
+        private readonly IEntityDataServiceAsync<TEntity> _dataService;
 
-        protected DataServiceBaseIntegrationTests(IEntityDataService<TEntity> dataService, Expression<Func<TEntity, TId>> idExpression)
+        protected DataServiceBaseIntegrationTests(IEntityDataServiceAsync<TEntity> dataService, Expression<Func<TEntity, TId>> idExpression)
             :base(idExpression)
         {
             _dataService = dataService;
         }
 
 
-        public virtual IEntityDataService<TEntity> GetServiceInstance(Action action = null)
+        public virtual IEntityDataServiceAsync<TEntity> GetServiceInstance(Action action = null)
         {
             action?.Invoke();
 
             return _dataService;
         }
 
-        protected virtual void CreateTestEntity(TEntity testEntity)
+        protected virtual async Task CreateTestEntityToStore(TEntity testEntity)
         {
-            _dataService.Add(testEntity);
+            await _dataService.Add(testEntity);
         }
 
         [Fact]
-        public virtual void Add_ValidDomainPassed_ShouldReturnDomainAfterCreation()
+        public virtual async Task Add_ValidDomainPassed_ShouldReturnDomainAfterCreation()
         {
             //Arrange
             var inputEntity = Factory_Entity();
             var dataService = GetServiceInstance();
 
             //Act
-            var returnedEntity = dataService.Add(inputEntity);
+            var returnedEntity = await dataService.Add(inputEntity);
 
             //Assert
             Assert.NotNull(returnedEntity);
@@ -46,7 +47,7 @@ namespace Eisk.Test.Core.TestBases
         }
 
         [Fact]
-        public virtual void Add_ValidDomainWithRandomIdPassed_ShouldReturnDomainAfterCreation()
+        public virtual async Task Add_ValidDomainWithRandomIdPassed_ShouldReturnDomainAfterCreation()
         {
             //Arrange
             var inputEntity = Factory_Entity();
@@ -55,7 +56,7 @@ namespace Eisk.Test.Core.TestBases
             var dataService = GetServiceInstance();
 
             //Act
-            var returnedEntity = dataService.Add(inputEntity);
+            var returnedEntity = await dataService.Add(inputEntity);
 
             //Assert
             Assert.NotNull(returnedEntity);
@@ -63,27 +64,27 @@ namespace Eisk.Test.Core.TestBases
         }
 
         [Fact]
-        public virtual void Add_NullDomainPassed_ShouldThrowArgumentNullException()
+        public virtual async Task Add_NullDomainPassed_ShouldThrowArgumentNullException()
         {
             //Arrange
             var dataService = GetServiceInstance();
             TEntity invalidNullDomain = null;
-            
+
             //Act and Assert
-            Assert.Throws<ArgumentNullException>(() => dataService.Add(invalidNullDomain));
+            await Assert.ThrowsAsync<ArgumentNullException>(() => dataService.Add(invalidNullDomain));
 
         }
 
         [Fact]
-        public virtual void GetById_ValidIdPassed_ShouldReturnResult()
+        public virtual async Task GetById_ValidIdPassed_ShouldReturnResult()
         {
             //Arrange
             var domain = Factory_Entity();
-            var dataService = GetServiceInstance(() => CreateTestEntity(domain));
+            var dataService = GetServiceInstance(async () => await CreateTestEntityToStore(domain));
             var idValue = GetIdValueFromEntity(domain);
             
             //Act
-            var returnedEntity = dataService.GetById(idValue);
+            var returnedEntity = await dataService.GetById(idValue);
 
             //Assert
             Assert.NotNull(returnedEntity);
@@ -91,13 +92,13 @@ namespace Eisk.Test.Core.TestBases
         }
 
         [Fact]
-        public virtual void GetById_EmptyIdPassed_ShouldReturnNull()
+        public virtual async Task GetById_EmptyIdPassed_ShouldReturnNull()
         {
             //Arrange
             var dataService = GetServiceInstance();
             
             //Act
-            var returnedEntity = dataService.GetById(default(TId));
+            var returnedEntity = await dataService.GetById(default(TId));
 
             //Assert
             Assert.Null(returnedEntity);
@@ -105,13 +106,13 @@ namespace Eisk.Test.Core.TestBases
         }
 
         [Fact]
-        public virtual void GetById_InvalidIdPassed_ShouldReturnNull()
+        public virtual async Task GetById_InvalidIdPassed_ShouldReturnNull()
         {
             //Arrange
             var dataService = GetServiceInstance();
 
             //Act
-            var returnedEntity = dataService.GetById(100);//TODO: make it generic random
+            var returnedEntity = await dataService.GetById(100);//TODO: make it generic random
 
             //Assert
             Assert.Null(returnedEntity);
@@ -119,17 +120,17 @@ namespace Eisk.Test.Core.TestBases
         }
 
         [Fact]
-        public virtual void Update_ValidDomainPassed_ShouldReturnDomain()
+        public virtual async Task Update_ValidDomainPassed_ShouldReturnDomain()
         {
             //Arrange
             var inputEntity = Factory_Entity();
-            var dataService = GetServiceInstance(() =>
+            var dataService = GetServiceInstance(async () =>
             {
-                CreateTestEntity(inputEntity);
+                await CreateTestEntityToStore(inputEntity);
             });
 
             //Act
-            var returnedEntity = dataService.Update(inputEntity);
+            var returnedEntity = await dataService.Update(inputEntity);
 
             //Assert
             Assert.NotNull(returnedEntity);
@@ -138,14 +139,14 @@ namespace Eisk.Test.Core.TestBases
         }
 
         [Fact]
-        public virtual void Update_ValidDomainWithEmptyIdPassed_ShouldCreateDomain()
+        public virtual async Task Update_ValidDomainWithEmptyIdPassed_ShouldCreateDomain()
         {
             //Arrange
             var inputEntity = Factory_Entity();
             var dataService = GetServiceInstance();
 
             //Act
-            var returnedEntity = dataService.Update(inputEntity);//may not be supported in all data providers
+            var returnedEntity = await dataService.Update(inputEntity);//may not be supported in all data providers
 
             //Assert
             Assert.NotNull(returnedEntity);
@@ -154,7 +155,7 @@ namespace Eisk.Test.Core.TestBases
         }
 
         [Fact]
-        public virtual void Update_ValidDomainWithRandomIdPassed_ShouldThrowException()
+        public virtual async Task Update_ValidDomainWithRandomIdPassed_ShouldThrowException()
         {
             //Arrange
             var entityWithRandomId = Factory_Entity();
@@ -162,34 +163,34 @@ namespace Eisk.Test.Core.TestBases
             var dataService = GetServiceInstance();
 
             //Act
-            var ex = Record.Exception(() => dataService.Update(entityWithRandomId));
+            var ex = await Record.ExceptionAsync(async () => await dataService.Update(entityWithRandomId));
 
             //Assert
             Assert.NotNull(ex);
         }
 
         [Fact]
-        public virtual void Update_NullDomainPassed_ShouldThrowArgumentNullException()
+        public virtual async Task Update_NullDomainPassed_ShouldThrowArgumentNullException()
         {
             //Arrange
             var dataService = GetServiceInstance();
             TEntity invalidNullDomain = null;
 
             //Act and Assert
-            Assert.Throws<ArgumentNullException>(() => dataService.Update(invalidNullDomain));
+            await Assert.ThrowsAsync<ArgumentNullException>(() => dataService.Update(invalidNullDomain));
 
         }
 
         [Fact]
-        public virtual void Delete_DomainWithValidIdPassed_ShouldDeleteSuccessfully()
+        public virtual async Task Delete_DomainWithValidIdPassed_ShouldDeleteSuccessfully()
         {
             //Arrange
             var inputEntity = Factory_Entity();
-            var dataService = GetServiceInstance(() => CreateTestEntity(inputEntity));
+            var dataService = GetServiceInstance(async () => await CreateTestEntityToStore(inputEntity));
             var idValue = GetIdValueFromEntity(inputEntity);
 
             //Act
-            dataService.Delete(inputEntity);
+            await dataService.Delete(inputEntity);
 
             //Assert
             var returnObject = dataService.GetById(idValue);
@@ -197,21 +198,21 @@ namespace Eisk.Test.Core.TestBases
         }
 
         [Fact]
-        public virtual void Delete_DomainWithEmptyIdPassed_ShouldThrowException()
+        public virtual async Task Delete_DomainWithEmptyIdPassed_ShouldThrowException()
         {
             //Arrange
             var inputEntity = Factory_Entity();
             var dataService = GetServiceInstance();
             
             //Act
-            var returnedException = Record.Exception(() => dataService.Delete(inputEntity));
+            var returnedException = await Record.ExceptionAsync(() => dataService.Delete(inputEntity));
 
             //Assert
             Assert.NotNull(returnedException);
         }
 
         [Fact]
-        public virtual void Delete_DomainWithRandomIdPassed_ShouldThrowException()
+        public virtual async Task Delete_DomainWithRandomIdPassed_ShouldThrowException()
         {
             //Arrange
             var inputEntity = Factory_Entity();
@@ -219,7 +220,7 @@ namespace Eisk.Test.Core.TestBases
             var dataService = GetServiceInstance();
 
             //Act
-            var ex = Record.Exception(() => dataService.Delete(inputEntity));
+            var ex = await Record.ExceptionAsync(() => dataService.Delete(inputEntity));
 
             //Assert
             Assert.NotNull(ex);

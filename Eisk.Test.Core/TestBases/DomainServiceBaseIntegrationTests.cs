@@ -1,43 +1,44 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Eisk.Core.DomainService;
 using Xunit;
 
 namespace Eisk.Test.Core.TestBases
 {
     public abstract class DomainServiceBaseIntegrationTests<TEntity, TId> : EntityTestBase<TEntity, TId>,
-        IServiceTest<DomainService<TEntity, TId>>
+        IServiceTest<DomainServiceAsync<TEntity, TId>>
         where TEntity : class, new()
     {
-        private readonly DomainService<TEntity, TId> _domainService;
+        private readonly DomainServiceAsync<TEntity, TId> _domainService;
 
-        protected DomainServiceBaseIntegrationTests( DomainService<TEntity, TId> domainService,
+        protected DomainServiceBaseIntegrationTests(DomainServiceAsync<TEntity, TId> domainService,
             Expression<Func<TEntity, TId>> idExpression) :base(idExpression)
         {
             _domainService = domainService;
         }
 
-        public virtual DomainService<TEntity, TId> GetServiceInstance(Action action = null)
+        public virtual DomainServiceAsync<TEntity, TId> GetServiceInstance(Action action = null)
         {
             action?.Invoke();
 
             return _domainService;
         }
 
-        protected virtual void CreateTestEntity(TEntity testEntity)
+        protected virtual async Task CreateTestEntityAsync(TEntity testEntity)
         {
-            _domainService.Add(testEntity);
+            await _domainService.Add(testEntity);
         }
 
         [Fact]
-        public virtual void Add_ValidDomainPassed_ShouldReturnDomainAfterCreation()
+        public virtual async Task Add_ValidDomainPassed_ShouldReturnDomainAfterCreation()
         {
             //Arrange
             var inputDomain = Factory_Entity();
             var domainService = GetServiceInstance();
 
             //Act
-            var returnedDomain = domainService.Add(inputDomain);
+            var returnedDomain = await domainService.Add(inputDomain);
 
             //Assert
             Assert.NotNull(returnedDomain);
