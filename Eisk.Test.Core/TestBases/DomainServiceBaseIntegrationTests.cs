@@ -140,7 +140,6 @@ namespace Eisk.Test.Core.TestBases
         public virtual async Task Delete_DomainWithEmptyIdPassed_ShouldThrowException()
         {
             //Arrange
-            var inputEntity = Factory_Entity();
             var domainService = GetServiceInstance();
             var emptyIdValue = default(TId);
 
