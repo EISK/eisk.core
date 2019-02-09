@@ -1,16 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Eisk.Core.DomainService;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Eisk.Core.Controller
+namespace Eisk.Core.WebApi
 {
-    using DomainService;
-
-    public abstract class DomainApiControllerBaseAsync<TDomain,TId>: Microsoft.AspNetCore.Mvc.Controller
+    public abstract class WebApiControllerBaseAsync<TDomain,TId>: Controller
         where TDomain : class, new()
     {
         protected DomainServiceAsync<TDomain,TId> DomainService;
-        protected DomainApiControllerBaseAsync(DomainServiceAsync<TDomain, TId> domainService)
+        protected WebApiControllerBaseAsync(DomainServiceAsync<TDomain, TId> domainService)
         {
             DomainService = domainService;
         }
