@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Reflection;
-using Eisk.Core.Exceptions;
 
 namespace Eisk.Core.Utils
 {
+    using Exceptions;
+
     public static class ExpressionUtil<TDomain>
     {
         public static object GetPropertyValue<TField>(Expression<Func<TDomain, TField>> expression, TDomain data)

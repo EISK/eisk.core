@@ -1,10 +1,11 @@
 ﻿using System;
-using Eisk.Core.Exceptions;
-using Eisk.Test.Core.DataGen;
 using Xunit;
 
 namespace Eisk.Test.Core.TestBases
 {
+    using DataGen;
+    using Eisk.Core.Exceptions;
+    
     public abstract class TestBase
     {
         protected static void ExpectException<TException>(Action action, 

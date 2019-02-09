@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Eisk.Core.DataService;
-using Eisk.Core.Exceptions;
-using Eisk.Core.Utils;
 
 namespace Eisk.Core.DomainService
 {
+    using DataService;
+    using Utils;
+
     public class DomainServiceAsync<TDomain, TId> : DomainServiceBase<TDomain, TId>
         where TDomain : class, new()
     {

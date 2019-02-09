@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Eisk.Core.DataService;
-using Eisk.Core.Utils;
 
 namespace Eisk.Core.DomainService
 {
+    using DataService;
+    using Utils;
+
     public class DomainService<TDomain, TId>: DomainServiceBase<TDomain, TId>
         where TDomain : class, new()
     {

@@ -1,7 +1,7 @@
-﻿using Eisk.Core.Exceptions;
-
-namespace Eisk.Core.DomainService
+﻿namespace Eisk.Core.DomainService
 {
+    using Exceptions;
+
     public abstract class DomainServiceBase<TDomain, TId>
         where TDomain : class, new()
     {
