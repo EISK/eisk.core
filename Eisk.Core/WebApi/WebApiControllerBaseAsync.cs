@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Eisk.Core.WebApi
 {
+    [Route("api/[controller]")]
     public abstract class WebApiControllerBaseAsync<TDomain,TId>: Controller
         where TDomain : class, new()
     {
