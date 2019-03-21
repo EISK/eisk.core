@@ -80,9 +80,6 @@ namespace Eisk.Core.DomainService
 
         public virtual async Task Delete(TId id)
         {
-            if (id.IsNullOrEmpty())
-                ThrowExceptionForInvalidLookupIdParameter();
-
             var entityInDb = await GetById(id);
 
             await EntityDataService.Delete(entityInDb);
