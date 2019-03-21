@@ -7,13 +7,13 @@ using Xunit;
 
 namespace Eisk.Test.Core.TestBases
 {
-    public abstract class DomainServiceBaseIntegrationTests<TEntity, TId> : EntityTestBase<TEntity, TId>,
+    public abstract class DomainServiceBaseComponentTests<TEntity, TId> : EntityTestBase<TEntity, TId>,
         IServiceTest<DomainServiceAsync<TEntity, TId>>
         where TEntity : class, new()
     {
         private readonly DomainServiceAsync<TEntity, TId> _domainService;
 
-        protected DomainServiceBaseIntegrationTests(DomainServiceAsync<TEntity, TId> domainService,
+        protected DomainServiceBaseComponentTests(DomainServiceAsync<TEntity, TId> domainService,
             Expression<Func<TEntity, TId>> idExpression) :base(idExpression)
         {
             _domainService = domainService;
