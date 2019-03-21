@@ -11,16 +11,16 @@ namespace Eisk.Core.DomainService
     public class DomainService<TDomain, TId>
         where TDomain : class, new()
     {
-        public readonly IEntityDataService<TDomain> EntityDataService;
+        readonly IEntityDataService<TDomain> _entityDataService;
 
         public DomainService(IEntityDataService<TDomain> entityDataService)
         {
-            EntityDataService = entityDataService;
+            _entityDataService = entityDataService;
         }
 
         public virtual async Task<IEnumerable<TDomain>> GetAll()
         {
-            return await EntityDataService.GetAll();
+            return await _entityDataService.GetAll();
         }
 
         public virtual async Task<TDomain> GetById(TId id)
@@ -28,7 +28,7 @@ namespace Eisk.Core.DomainService
             if (id.IsNullOrEmpty())
                 ThrowExceptionForInvalidLookupIdParameter();
 
-            var entityInDb = await EntityDataService.GetById(id);
+            var entityInDb = await _entityDataService.GetById(id);
 
             if (entityInDb == null)
                 ThrowExceptionForNonExistantEntity(id);
@@ -48,7 +48,7 @@ namespace Eisk.Core.DomainService
 
             preProcessAction?.Invoke(entity);
 
-            var returnVal = await EntityDataService.Add(entity);
+            var returnVal = await _entityDataService.Add(entity);
 
             postProcessAction?.Invoke(returnVal);
 
@@ -72,7 +72,7 @@ namespace Eisk.Core.DomainService
 
             preProcessAction?.Invoke(oldEntity, newEntity);
 
-            var returnVal = await EntityDataService.Update(newEntity);
+            var returnVal = await _entityDataService.Update(newEntity);
 
             postProcessAction?.Invoke(returnVal);
 
@@ -83,7 +83,7 @@ namespace Eisk.Core.DomainService
         {
             var entityInDb = await GetById(id);
 
-            await EntityDataService.Delete(entityInDb);
+            await _entityDataService.Delete(entityInDb);
         }
 
         protected virtual void ThrowExceptionForNullInputEntity()
