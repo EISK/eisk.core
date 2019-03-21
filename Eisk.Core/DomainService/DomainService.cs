@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Eisk.Core.Exceptions;
 
 namespace Eisk.Core.DomainService
 {
     using DataService;
     using Utils;
 
-    public class DomainService<TDomain, TId> : DomainServiceBase<TDomain, TId>
+    public class DomainService<TDomain, TId>
         where TDomain : class, new()
     {
         public readonly IEntityDataService<TDomain> EntityDataService;
@@ -83,6 +84,21 @@ namespace Eisk.Core.DomainService
             var entityInDb = await GetById(id);
 
             await EntityDataService.Delete(entityInDb);
+        }
+
+        protected virtual void ThrowExceptionForNullInputEntity()
+        {
+            throw new NullInputEntityException<TDomain>();
+        }
+
+        protected virtual void ThrowExceptionForInvalidLookupIdParameter()
+        {
+            throw new InvalidLookupIdParameterException<TDomain>();
+        }
+
+        protected virtual void ThrowExceptionForNonExistantEntity(TId idValue)
+        {
+            throw new NonExistantEntityException<TDomain>(idValue);
         }
     }
 }
