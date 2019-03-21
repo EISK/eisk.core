@@ -62,9 +62,6 @@ namespace Eisk.Core.DomainService
 
         public virtual async Task<TDomain> Update(TId id, TDomain newEntity, Action<TDomain, TDomain> preProcessAction, Action<TDomain> postProcessAction = null)
         {
-            if (id.IsNullOrEmpty())
-                ThrowExceptionForInvalidLookupIdParameter();
-
             if (newEntity == null)
                 ThrowExceptionForNullInputEntity();
 

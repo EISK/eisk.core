@@ -21,16 +21,6 @@ namespace Eisk.Core.DataService.EFCore
             return await DbContext.Set<TEntity>().FindAsync(id);
         }
 
-        public virtual async Task<TEntity> GetFirstOrDefault(Expression<Func<TEntity, bool>> criteria)
-        {
-            return await DbContext.Set<TEntity>().FirstOrDefaultAsync(criteria);
-        }
-
-        public virtual async Task<IList<TEntity>> GetMultiple(Expression<Func<TEntity, bool>> criteria)
-        {
-            return await DbContext.Set<TEntity>().Where(criteria).ToListAsync();
-        }
-
         public virtual async Task<IList<TEntity>> GetAll()
         {
             return await DbContext.Set<TEntity>().ToListAsync();
