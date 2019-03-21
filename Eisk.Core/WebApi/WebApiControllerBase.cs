@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace Eisk.Core.WebApi
 {
     [Route("api/[controller]")]
-    public abstract class WebApiControllerBaseAsync<TDomain,TId>: Controller
+    public abstract class WebApiControllerBase<TDomain,TId>: Controller
         where TDomain : class, new()
     {
         protected DomainService<TDomain,TId> DomainService;
-        protected WebApiControllerBaseAsync(DomainService<TDomain, TId> domainService)
+        protected WebApiControllerBase(DomainService<TDomain, TId> domainService)
         {
             DomainService = domainService;
         }
