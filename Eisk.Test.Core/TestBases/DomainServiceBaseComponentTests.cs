@@ -116,7 +116,7 @@ namespace Eisk.Test.Core.TestBases
             //Arrange
             var domainService = GetServiceInstance();
             var emptyIdValue = default(TId);
-            TEntity dummayObject = null;
+            TEntity dummayObject = Factory_Entity();
 
             //Act + Assert
             await Assert.ThrowsAsync<InvalidLookupIdParameterException<TEntity>>(() => domainService.Update(emptyIdValue, dummayObject));
