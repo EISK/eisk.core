@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Eisk.Core.DataService.EFCore
 {
-    public class EntityDataServiceAsync<TEntity> : IEntityDataServiceAsync<TEntity> where TEntity : class, new()
+    public class EntityDataService<TEntity> : IEntityDataService<TEntity> where TEntity : class, new()
     {
         protected readonly DbContext DbContext;
 
-        public EntityDataServiceAsync(DbContext dbContext)
+        public EntityDataService(DbContext dbContext)
         {
             DbContext = dbContext;
         }

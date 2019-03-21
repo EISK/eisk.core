@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Eisk.Core.DataService
 {
-    public interface IEntityDataServiceAsync<TEntity> where TEntity : class, new()
+    public interface IEntityDataService<TEntity> where TEntity : class, new()
     {
         Task<TEntity> GetById<TId>(TId id);
         Task<TEntity> GetFirstOrDefault(Expression<Func<TEntity, bool>> criteria);

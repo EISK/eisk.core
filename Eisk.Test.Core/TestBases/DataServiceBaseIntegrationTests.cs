@@ -7,19 +7,19 @@ using Xunit;
 namespace Eisk.Test.Core.TestBases
 {
     public abstract class DataServiceBaseIntegrationTests<TEntity, TId> : EntityTestBase<TEntity, TId>,
-        IServiceTest<IEntityDataServiceAsync<TEntity>>
+        IServiceTest<IEntityDataService<TEntity>>
         where TEntity : class, new()
     {
-        private readonly IEntityDataServiceAsync<TEntity> _dataService;
+        private readonly IEntityDataService<TEntity> _dataService;
 
-        protected DataServiceBaseIntegrationTests(IEntityDataServiceAsync<TEntity> dataService, Expression<Func<TEntity, TId>> idExpression)
+        protected DataServiceBaseIntegrationTests(IEntityDataService<TEntity> dataService, Expression<Func<TEntity, TId>> idExpression)
             :base(idExpression)
         {
             _dataService = dataService;
         }
 
 
-        public virtual IEntityDataServiceAsync<TEntity> GetServiceInstance(Action action = null)
+        public virtual IEntityDataService<TEntity> GetServiceInstance(Action action = null)
         {
             action?.Invoke();
 

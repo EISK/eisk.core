@@ -9,8 +9,8 @@ namespace Eisk.Core.WebApi
     public abstract class WebApiControllerBaseAsync<TDomain,TId>: Controller
         where TDomain : class, new()
     {
-        protected DomainServiceAsync<TDomain,TId> DomainService;
-        protected WebApiControllerBaseAsync(DomainServiceAsync<TDomain, TId> domainService)
+        protected DomainService<TDomain,TId> DomainService;
+        protected WebApiControllerBaseAsync(DomainService<TDomain, TId> domainService)
         {
             DomainService = domainService;
         }

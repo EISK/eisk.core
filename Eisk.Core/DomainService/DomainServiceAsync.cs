@@ -7,12 +7,12 @@ namespace Eisk.Core.DomainService
     using DataService;
     using Utils;
 
-    public class DomainServiceAsync<TDomain, TId> : DomainServiceBase<TDomain, TId>
+    public class DomainService<TDomain, TId> : DomainServiceBase<TDomain, TId>
         where TDomain : class, new()
     {
-        public readonly IEntityDataServiceAsync<TDomain> EntityDataService;
+        public readonly IEntityDataService<TDomain> EntityDataService;
 
-        public DomainServiceAsync(IEntityDataServiceAsync<TDomain> entityDataService)
+        public DomainService(IEntityDataService<TDomain> entityDataService)
         {
             EntityDataService = entityDataService;
         }

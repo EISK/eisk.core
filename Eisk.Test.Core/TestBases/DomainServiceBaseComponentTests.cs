@@ -8,18 +8,18 @@ using Xunit;
 namespace Eisk.Test.Core.TestBases
 {
     public abstract class DomainServiceBaseComponentTests<TEntity, TId> : EntityTestBase<TEntity, TId>,
-        IServiceTest<DomainServiceAsync<TEntity, TId>>
+        IServiceTest<DomainService<TEntity, TId>>
         where TEntity : class, new()
     {
-        private readonly DomainServiceAsync<TEntity, TId> _domainService;
+        private readonly DomainService<TEntity, TId> _domainService;
 
-        protected DomainServiceBaseComponentTests(DomainServiceAsync<TEntity, TId> domainService,
+        protected DomainServiceBaseComponentTests(DomainService<TEntity, TId> domainService,
             Expression<Func<TEntity, TId>> idExpression) :base(idExpression)
         {
             _domainService = domainService;
         }
 
-        public virtual DomainServiceAsync<TEntity, TId> GetServiceInstance(Action action = null)
+        public virtual DomainService<TEntity, TId> GetServiceInstance(Action action = null)
         {
             action?.Invoke();
 
